@@ -1,0 +1,119 @@
+public class Main {
+    public static void main(String[] args) {
+        Frame frame = new Frame();
+    }
+}
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Frame extends JFrame implements ActionListener {
+//initiating variables
+    JTextField input1;
+    JTextField input2;
+    JTextField output;
+    JButton buttonplus = new JButton("+");
+    JButton buttonminus = new JButton("-");
+    JButton buttonmultiply = new JButton("*");
+    JButton buttondivide = new JButton("/");
+    JButton buttonequals = new JButton("=");
+    JButton buttonclear = new JButton("C");
+    JPanel panelbutton;
+    int firstinput;
+    int secondinput;
+    String operation = "";
+
+    Frame() {
+//frame settings
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(500,250);
+        this.setLayout(null);
+//input1 field
+        input1 = new JTextField("");
+        input1.setBounds(50,50,100,50);
+        input1.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+        input1.setOpaque(true);
+//input2 field
+        input2 = new JTextField("");
+        input2.setBounds(175,50,100,50);
+        input2.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+        input2.setOpaque(true);
+//result field
+        output = new JTextField("");
+        output.setEditable(false);
+        output.setBounds(300,50,100,50);
+        output.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+        output.setOpaque(true);
+//Arraying buttons to easily add to the panel and change for the updates
+        JButton buttons[] = {buttonplus, buttonminus, buttonmultiply, buttondivide, buttonequals, buttonclear};
+
+        panelbutton = new JPanel();
+        panelbutton.setLayout(new GridLayout(1,6));
+        panelbutton.setBounds(50,100,350,40);
+        for (int i = 0; i<buttons.length; i++){
+
+            panelbutton.add(buttons[i]);
+        }
+        for (JButton button : buttons){
+            button.setFocusable(false);
+            button.setFont(new Font("Arial", Font.BOLD, 25));
+            button.addActionListener(this);
+        }
+        buttonclear.setFont(new Font("Arial", Font.BOLD, 25));
+//adding everything to the frame
+        this.add(panelbutton);
+        this.add(output);
+        this.add(input2);
+        this.add(input1);
+        this.setVisible(true);
+
+    }
+//when a operation clicked, store input1, when clicked "equals", do the math
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == buttonplus){
+            firstinput = Integer.parseInt(input1.getText());
+            operation = "+";
+        } else if (e.getSource() == buttonminus) {
+            firstinput = Integer.parseInt(input1.getText());
+            operation = "-";
+        }else if (e.getSource() == buttonmultiply) {
+            firstinput = Integer.parseInt(input1.getText());
+            operation = "*";
+        }else if (e.getSource() == buttondivide) {
+            firstinput = Integer.parseInt(input1.getText());
+            operation = "/";
+        }else if (e.getSource() == buttonequals) {
+            secondinput = Integer.parseInt(input2.getText());
+
+            switch (operation) {
+                case "+":
+                    output.setText(String.valueOf(firstinput + secondinput));
+                    break;
+                case "-":
+                    output.setText(String.valueOf(firstinput - secondinput));
+                    break;
+                case "*":
+                    output.setText(String.valueOf(firstinput * secondinput));
+                    break;
+                case "/":
+                    if (secondinput != 0) {
+                        output.setText(String.valueOf(firstinput / secondinput));
+                    } else {
+                        output.setText("Error");
+                    }
+                    break;
+            }
+//clears everything
+        } else if (e.getSource() == buttonclear) {
+            firstinput = 0;
+            secondinput = 0;
+            input1.setText("");
+            input2.setText("");
+            output.setText("");
+        }
+
+    }
+}
