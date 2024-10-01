@@ -1,4 +1,6 @@
-A basic calculator app that doing math works but only with two numbers now.
-In the next versions I will add the continious calculations, numeric buttons and more math operations.
-Also visual improvements will be added.
-![image](https://github.com/user-attachments/assets/d94eb56b-1ff8-4df5-8934-712c3c7059b9)
+A basic calculator app that doing math operations with two numbers that you will provide.
+Visual improvements are added, exceptions handled.
+This is a starter project for me to understand calculator funtions, methods and mindset.
+There will be a more upgraded calculator that we are used to see.
+
+![image](https://github.com/user-attachments/assets/4ba02cdb-93e8-4cd4-8a26-338589055ebd)
