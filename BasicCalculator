@@ -5,12 +5,14 @@ public class Main {
 }
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Frame extends JFrame implements ActionListener {
-//initiating variables
+
+    ImageIcon iconTitle = new ImageIcon("title.png");
     JTextField input1;
     JTextField input2;
     JTextField output;
@@ -24,34 +26,45 @@ public class Frame extends JFrame implements ActionListener {
     int firstinput;
     int secondinput;
     String operation = "";
+    JLabel labelErrorMessage;
+    Color blackColor = Color.decode("#1B262C");
+    Color lightblueColor = Color.decode("#BBE1FA");
+    Color darkblueColor = Color.decode("#0F4C75");
 
     Frame() {
-//frame settings
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(500,250);
+        this.getContentPane().setBackground(blackColor);
+        this.setTitle("Basic Calculator");
+        this.setIconImage(iconTitle.getImage());
         this.setLayout(null);
-//input1 field
+
         input1 = new JTextField("");
         input1.setBounds(50,50,100,50);
         input1.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+        input1.setBorder(new LineBorder(Color.BLACK,4));
         input1.setOpaque(true);
-//input2 field
+
         input2 = new JTextField("");
         input2.setBounds(175,50,100,50);
         input2.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+        input2.setBorder(new LineBorder(Color.BLACK,4));
         input2.setOpaque(true);
-//result field
+
         output = new JTextField("");
         output.setEditable(false);
         output.setBounds(300,50,100,50);
         output.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+        output.setBorder(new LineBorder(Color.BLACK,4));
         output.setOpaque(true);
-//Arraying buttons to easily add to the panel and change for the updates
+
         JButton buttons[] = {buttonplus, buttonminus, buttonmultiply, buttondivide, buttonequals, buttonclear};
 
         panelbutton = new JPanel();
-        panelbutton.setLayout(new GridLayout(1,6));
-        panelbutton.setBounds(50,100,350,40);
+        panelbutton.setLayout(new GridLayout(1,6,10,10));
+        panelbutton.setBounds(40,120,370,40);
+        panelbutton.setBackground(blackColor);
         for (int i = 0; i<buttons.length; i++){
 
             panelbutton.add(buttons[i]);
@@ -59,10 +72,17 @@ public class Frame extends JFrame implements ActionListener {
         for (JButton button : buttons){
             button.setFocusable(false);
             button.setFont(new Font("Arial", Font.BOLD, 25));
+            button.setBackground(lightblueColor);
+            button.setForeground(Color.BLACK);
+            button.setBorder(new LineBorder(Color.black, 2));
             button.addActionListener(this);
         }
         buttonclear.setFont(new Font("Arial", Font.BOLD, 25));
-//adding everything to the frame
+
+        labelErrorMessage = new JLabel();
+        labelErrorMessage.setBounds(20,0,370,40);
+
+        this.add(labelErrorMessage);
         this.add(panelbutton);
         this.add(output);
         this.add(input2);
@@ -70,43 +90,64 @@ public class Frame extends JFrame implements ActionListener {
         this.setVisible(true);
 
     }
-//when a operation clicked, store input1, when clicked "equals", do the math
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonplus){
-            firstinput = Integer.parseInt(input1.getText());
-            operation = "+";
-        } else if (e.getSource() == buttonminus) {
-            firstinput = Integer.parseInt(input1.getText());
-            operation = "-";
-        }else if (e.getSource() == buttonmultiply) {
-            firstinput = Integer.parseInt(input1.getText());
-            operation = "*";
-        }else if (e.getSource() == buttondivide) {
-            firstinput = Integer.parseInt(input1.getText());
-            operation = "/";
-        }else if (e.getSource() == buttonequals) {
-            secondinput = Integer.parseInt(input2.getText());
-
-            switch (operation) {
-                case "+":
-                    output.setText(String.valueOf(firstinput + secondinput));
-                    break;
-                case "-":
-                    output.setText(String.valueOf(firstinput - secondinput));
-                    break;
-                case "*":
-                    output.setText(String.valueOf(firstinput * secondinput));
-                    break;
-                case "/":
-                    if (secondinput != 0) {
-                        output.setText(String.valueOf(firstinput / secondinput));
-                    } else {
-                        output.setText("Error");
-                    }
-                    break;
+            try {
+                firstinput = Integer.parseInt(input1.getText());
+                operation = "+";
+            }catch (NumberFormatException exception){
+                labelErrorMessage.setText("Geçerli bir sayı giriniz");
             }
-//clears everything
+        } else if (e.getSource() == buttonminus) {
+            try {
+                firstinput = Integer.parseInt(input1.getText());
+                operation = "-";
+            }catch (NumberFormatException exception){
+                labelErrorMessage.setText("Geçerli bir sayı giriniz");
+            }
+        }else if (e.getSource() == buttonmultiply) {
+            try {
+                firstinput = Integer.parseInt(input1.getText());
+                operation = "*";
+            }catch (NumberFormatException exception){
+                labelErrorMessage.setText("Geçerli bir sayı giriniz");
+            }
+        }else if (e.getSource() == buttondivide) {
+            try {
+                firstinput = Integer.parseInt(input1.getText());
+                operation = "/";
+            }catch (NumberFormatException exception){
+                labelErrorMessage.setText("Geçerli bir sayı giriniz");
+            }
+        }else if (e.getSource() == buttonequals) {
+            try {
+                secondinput = Integer.parseInt(input2.getText());
+                labelErrorMessage.setText(null);
+
+                switch (operation) {
+                    case "+":
+                        output.setText(String.valueOf(firstinput + secondinput));
+                        break;
+                    case "-":
+                        output.setText(String.valueOf(firstinput - secondinput));
+                        break;
+                    case "*":
+                        output.setText(String.valueOf(firstinput * secondinput));
+                        break;
+                    case "/":
+                        if (secondinput != 0) {
+                            output.setText(String.valueOf(firstinput / secondinput));
+                        } else {
+                            output.setText("Error");
+                        }
+                        break;
+                }
+            }catch (NumberFormatException exception){
+                labelErrorMessage.setText("Geçerli bir sayı giriniz");
+            }
+
         } else if (e.getSource() == buttonclear) {
             firstinput = 0;
             secondinput = 0;
